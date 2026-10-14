@@ -1,3 +1,16 @@
+## Citation
+
+If you use this code or methodology in your research, please cite:
+
+```bibtex
+@article{linardos2026evaluating,
+  title={Evaluating the utility of AI-generated mammography images in breast cancer analysis},
+  author={Linardos, Akis and Thakur, Siddhesh and Gastounioti, Aimilia and Makris, Dimitrios and Bakas, Spyridon},
+  journal={Scientific Reports},
+  year={2026},
+  publisher={Nature Publishing Group UK London}
+}
+
 # Conditional Mammography Synthesis & Classification
 
 This repository contains the synthesis and downstream classification pipelines used to study the utility of AI-generated mammograms for breast cancer classification.
