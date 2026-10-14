@@ -9,7 +9,7 @@
 root_dir: '/mnt/d/Datasets/EMBED/EMBED_binary_256x256/train'
 # root_dir: '/mnt/d/Datasets/CMMD/CMMD_binary_256x256/train'
 # root_dir: '/mnt/d/Datasets/CMMD/balanced_CMMD'
-# root_dir: '/mnt/d/Datasets/inbreast/inbreast_clean/train'
+root_dir: '/mnt/d/Datasets/inbreast/inbreast_clean_256x256/train'
 
 # New:
 # train_root_dir: '/mnt/d/Datasets/EMBED/EMBED_binary_clean/train'
@@ -19,7 +19,7 @@ synth_data_dir: 'synthetic_guide5.0'
 embed_synth: False # use embed synthetic data for other datasets too
 # synth_data_dir: 'synthetic_guide3.0'
 real_percentage:      1.0    # keep    this fraction of each class
-synthetic_multiplier: 0.75     # append (multiplier × kept_real) synthetic
+synthetic_multiplier: 0.0     # append (multiplier × kept_real) synthetic
 # for replacement of real with synthetic:
 # synth_mult = (1 - f) / f
 #     f = 0.7 → synth_mult ≈ 0.43 (70 % real / 30 % synth)
@@ -49,11 +49,35 @@ fine_tune:          False            # set → true to activate
 # fine_tune_ckpt: 157_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed44_Augsgeometric_real1.0_syn0.25
 # fine_tune_ckpt: 157_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed45_Augsgeometric_real1.0_syn0.25
 # fine_tune_ckpt: 157_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed46_Augsgeometric_real1.0_syn0.25
-fine_tune_ckpt: 158_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed42_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 158_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed42_Augsgeometric_real1.0_syn0.75
 # fine_tune_ckpt: 158_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed43_Augsgeometric_real1.0_syn0.75
 # fine_tune_ckpt: 158_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed44_Augsgeometric_real1.0_syn0.75
 # fine_tune_ckpt: 158_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed45_Augsgeometric_real1.0_syn0.75
 # fine_tune_ckpt: 158_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed46_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 162_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed42_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 162_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed43_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 162_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed44_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 162_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed45_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 162_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed46_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 163_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed42_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 163_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed43_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 163_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed44_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 163_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed45_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 163_EMBED_binary_256x256_holdout_efficientnet_b0_mulseed_seed46_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 167_EMBED_binary_256x256_holdout_resnet50_mulseed_seed42_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 167_EMBED_binary_256x256_holdout_resnet50_mulseed_seed43_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 167_EMBED_binary_256x256_holdout_resnet50_mulseed_seed44_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 167_EMBED_binary_256x256_holdout_resnet50_mulseed_seed45_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 167_EMBED_binary_256x256_holdout_resnet50_mulseed_seed46_Augsgeometric_real1.0_syn0.25
+# fine_tune_ckpt: 168_EMBED_binary_256x256_holdout_resnet50_mulseed_seed42_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 168_EMBED_binary_256x256_holdout_resnet50_mulseed_seed43_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 168_EMBED_binary_256x256_holdout_resnet50_mulseed_seed44_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 168_EMBED_binary_256x256_holdout_resnet50_mulseed_seed45_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 168_EMBED_binary_256x256_holdout_resnet50_mulseed_seed46_Augsgeometric_real1.0_syn0.75
+fine_tune_ckpt: 158_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed42_Augsgeometric_real1.0_syn0.75
+# fine_tune_ckpt: 156_EMBED_binary_256x256_holdout_convnext_tiny_Replacement_seed46_Augsgeometric_real1.0_syn0.0
+# fine_tune_ckpt: 147_EMBED_binary_clean_holdout_convnext_tiny_Replacement_seed44_Augsgeometric_real0.25_syn0.75
+# fine_tune_ckpt: 144_EMBED_binary_clean_holdout_convnext_tiny_Replacement_seed44_Augsgeometric_real0.0_syn1.0
 # ------------------------------------------------
 freeze_backbone_epochs: 0   # 0  → never freeze
 # ------------------------------------------------
@@ -66,11 +90,11 @@ augmentations: geometric # basic, geometric, intensity, None
 learning_rate: 0.0001 # default 0.0003. Go higher for fine-tune.
 weight_decay: 0.00001
 early_stopping_metric: "val_loss"   # options: balanced_acc | auc | val_loss
-early_stopping_patience: 10
-num_epochs: 100
-val_split: 0.1 # only for hold-out not cval
+early_stopping_patience: 30
+num_epochs: 200
+val_split: 0.3 #0.1 # only for hold-out not cval
 k_folds: 5 # only for cval
-model_name: efficientnet_b0 # convnext_tiny #convnext_tiny
+model_name: convnext_tiny #resnet50 #efficientnet_b0 # convnext_tiny #convnext_tiny
   # resnet50 works best with 0.001 LR
   # convnext_tiny
   # - efficientnet_b0
@@ -81,7 +105,7 @@ model_name: efficientnet_b0 # convnext_tiny #convnext_tiny
   # - vgg19
 seed: 44
 store_sample_per_epoch: True # to visualize images
-experiment_number: 163 # 62 onward is 12 vs 56
+experiment_number: 177 # 62 onward is 12 vs 56
 #
 # 90 oracle redo (deleted by accident oops)
 # --------103-107 is fine-tuning on geometric augs
@@ -109,6 +133,21 @@ experiment_number: 163 # 62 onward is 12 vs 56
 # - 161 efficientnet
 # - 162 0.25
 # - 163 0.75
+# - 164 0.25 ftune
+# - 165 0.75 ftune
+# - 166 resnet50
+# - 167 0.25
+# - 168 0.75
+# - 169 0.25 ftune
+# - 170 0.75 ftune
+### Inbreast
+# - 171 pretrained on EMBED best performing
+# - 172 pretrained on EMBED baseline
+# - 173 pretrained on 0.75 replacement
+# - 174 pretrained on total replacement
+# - 175 50% split - EMBED baseline
+# - 176 50% split - EMBED best performing
+# - 177 barren inbreast
 # ───────────── sanity-check dial ─────────────
 sanity_check: False        # turn ON to over-fit a tiny slice
 

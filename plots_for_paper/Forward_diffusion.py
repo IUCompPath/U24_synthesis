@@ -8,6 +8,7 @@ from PIL import Image
 root      = '/mnt/d/Datasets/EMBED/EMBED_clean_256x256/train'
 orig_path = os.path.join(root, 'original')
 out_dir   = '/mnt/d/Datasets/EMBED/EMBED_clean_256x256/paper_sample_images'
+out_dir   = './paper_sample_images'
 os.makedirs(out_dir, exist_ok=True)
 
 # helpers ----------------------------------------------------------

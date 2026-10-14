@@ -148,7 +148,7 @@ tr_idx, val_idx = train_test_split(
     np.arange(len(real_ds)),
     test_size=val_split,
     stratify=real_lbl,
-    random_state=seed,
+    random_state=461,
 )
 
 rng = np.random.default_rng(seed)

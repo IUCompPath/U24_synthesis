@@ -9,15 +9,27 @@ from nibabel import Nifti1Image
 # ---------------------------------------------------------------------
 #  DICOM -> NIfTI (single-slice)
 # ---------------------------------------------------------------------
-def load_dicom_and_save_as_nifti(dicom_file_path):
+import cv2
+
+def load_dicom_and_save_as_nifti(dicom_file_path, target_size=(256, 256)):
     dicom_data = dcmread(dicom_file_path)
-    pixel_array = dicom_data.pixel_array  # Extract pixel array
-    volume = np.expand_dims(pixel_array, axis=-1)  # (H, W, 1)
+    pixel_array = dicom_data.pixel_array.astype(np.float32)  # (H, W)
+
+    # --- normalize ---
+    if pixel_array.max() > pixel_array.min():
+        pixel_array = (pixel_array - pixel_array.min()) / (pixel_array.max() - pixel_array.min())
+    else:
+        pixel_array = np.zeros_like(pixel_array)
+
+    # --- resize ---
+    pixel_array = cv2.resize(pixel_array, target_size, interpolation=cv2.INTER_AREA)
+
+    # --- add channel dim ---
+    volume = np.expand_dims(pixel_array, axis=-1)  # (256, 256, 1)
 
     affine = np.eye(4)
-    nifti_image = Nifti1Image(volume, affine)
+    nifti_image = Nifti1Image(volume.astype(np.float32), affine)
     return nifti_image
-
 # ---------------------------------------------------------------------
 #  BI-RADS classifier
 #  Keep:
@@ -53,7 +65,7 @@ def classify_birads(birads):
 # ---------------------------------------------------------------------
 source_folder = '/mnt/d/Datasets/inbreast/ALL-IMGS'
 metadata_file = '/mnt/d/Datasets/inbreast/INbreast.xls'
-destination_folder = '/mnt/d/Datasets/inbreast/inbreast_clean'
+destination_folder = '/mnt/d/Datasets/inbreast/inbreast_clean_256x256'
 
 os.makedirs(os.path.join(destination_folder, 'benign'), exist_ok=True)
 os.makedirs(os.path.join(destination_folder, 'malignant'), exist_ok=True)

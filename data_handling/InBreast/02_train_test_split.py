@@ -3,7 +3,7 @@ import shutil
 import random
 
 random.seed(42)
-source_folder = '/mnt/d/Datasets/inbreast/inbreast_clean'
+source_folder = '/mnt/d/Datasets/inbreast/inbreast_clean_256x256'
 train_folder = os.path.join(source_folder, 'train')
 test_folder = os.path.join(source_folder, 'test')
 
@@ -11,7 +11,7 @@ os.makedirs(train_folder, exist_ok=True)
 os.makedirs(test_folder, exist_ok=True)
 
 classes = ['benign', 'malignant']
-train_ratio = 0.8  # 80% for training, 10% for testing
+train_ratio = 0.8  # 80% for training, 20% for testing
 
 # Process each class
 for class_name in classes:

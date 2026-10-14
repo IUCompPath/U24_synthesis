@@ -48,26 +48,65 @@ SPLITS = [
 
 GROUPS = {
     "baseline": [
+        # original seeds
         "156_EMBED_binary_256x256_holdout_convnext_tiny_Replacement_seed42_Augsgeometric_real1.0_syn0.0",
         "156_EMBED_binary_256x256_holdout_convnext_tiny_Replacement_seed43_Augsgeometric_real1.0_syn0.0",
         "156_EMBED_binary_256x256_holdout_convnext_tiny_Replacement_seed44_Augsgeometric_real1.0_syn0.0",
         "156_EMBED_binary_256x256_holdout_convnext_tiny_Replacement_seed45_Augsgeometric_real1.0_syn0.0",
         "156_EMBED_binary_256x256_holdout_convnext_tiny_Replacement_seed46_Augsgeometric_real1.0_syn0.0",
+
+        # additional seeds
+        *[
+            f"156_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed{s}_Augsgeometric_real1.0_syn0.0"
+            for s in range(14, 42)
+        ]
     ],
     "syn025": [
+        # original seeds
         "159_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed42_Augsgeometric_real1.0_syn0.0_fTune_157_real1.0_syn0.25",
         "159_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed43_Augsgeometric_real1.0_syn0.0_fTune_157_real1.0_syn0.25",
         "159_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed44_Augsgeometric_real1.0_syn0.0_fTune_157_real1.0_syn0.25",
         "159_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed45_Augsgeometric_real1.0_syn0.0_fTune_157_real1.0_syn0.25",
         "159_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed46_Augsgeometric_real1.0_syn0.0_fTune_157_real1.0_syn0.25",
+
+        # block seeds
+        *[
+            f"159_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed{s}_Augsgeometric_real1.0_syn0.0_fTune_157_real1.0_syn0.25"
+            for s in (
+                list(range(142,147)) +
+                list(range(242,247)) +
+                list(range(342,347)) +
+                list(range(442,447)) +
+                list(range(542,547))
+            )
+        ]
     ],
     "syn075": [
+        # original seeds
         "160_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed42_Augsgeometric_real1.0_syn0.0_fTune_158_real1.0_syn0.75",
         "160_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed43_Augsgeometric_real1.0_syn0.0_fTune_158_real1.0_syn0.75",
         "160_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed44_Augsgeometric_real1.0_syn0.0_fTune_158_real1.0_syn0.75",
         "160_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed45_Augsgeometric_real1.0_syn0.0_fTune_158_real1.0_syn0.75",
         "160_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed46_Augsgeometric_real1.0_syn0.0_fTune_158_real1.0_syn0.75",
-    ],
+
+        # mid seeds
+        *[
+            f"160_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed{s}_Augsgeometric_real1.0_syn0.0_fTune_158_real1.0_syn0.75"
+            for s in range(37, 42)
+        ],
+
+        # block seeds
+        *[
+            f"160_EMBED_binary_256x256_holdout_convnext_tiny_mulseed_seed{s}_Augsgeometric_real1.0_syn0.0_fTune_158_real1.0_syn0.75"
+            for s in (
+                list(range(143,147)) +
+                list(range(243,247)) +
+                list(range(343,347)) +
+                list(range(443,447)) +
+                list(range(543,547))
+            )
+        ]
+    ]
 }
 
 DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
@@ -198,6 +237,20 @@ def safe_stats(values: List[float]):
         return float(arr[0]), 0.0, 0.0
     return float(arr.mean()), float(arr.std(ddof=1)), float(arr.var(ddof=1))
 
+def compute_ci(values: List[float], confidence=0.95):
+    arr = np.array(values, dtype=float)
+    arr = arr[~np.isnan(arr)]
+
+    if len(arr) < 2:
+        return float("nan"), float("nan")
+
+    mean = arr.mean()
+    sem = arr.std(ddof=1) / np.sqrt(len(arr))
+
+    # normal approximation (fine for your N)
+    margin = 1.96 * sem
+
+    return mean - margin, mean + margin
 
 def paired_tests(a: List[float], b: List[float]) -> Dict[str, float]:
     a = np.array(a, dtype=float)
@@ -344,12 +397,14 @@ if __name__ == "__main__":
             bal_m, bal_s, bal_v = safe_stats(bal)
             sen_m, sen_s, sen_v = safe_stats(sen)
             spe_m, spe_s, spe_v = safe_stats(spe)
+            bal_lo, bal_hi = compute_ci(bal)
+            sen_lo, sen_hi = compute_ci(sen)
+            spe_lo, spe_hi = compute_ci(spe)
 
             print(f"  {split_name} ({split_desc}):")
-            print(f"    Balanced Acc: {bal_m:.4f} ± {bal_s:.4f}")
-            print(f"    Sensitivity : {sen_m:.4f} ± {sen_s:.4f}")
-            print(f"    Specificity : {spe_m:.4f} ± {spe_s:.4f}")
-
+            print(f"    Balanced Acc: {bal_m:.4f} ± {bal_s:.4f}  (95% CI: [{bal_lo:.4f}, {bal_hi:.4f}])")
+            print(f"    Sensitivity : {sen_m:.4f} ± {sen_s:.4f}  (95% CI: [{sen_lo:.4f}, {sen_hi:.4f}])")
+            print(f"    Specificity : {spe_m:.4f} ± {spe_s:.4f}  (95% CI: [{spe_lo:.4f}, {spe_hi:.4f}])")
             summary_rows.append({
                 "group": group_name,
                 "split": split_name,
@@ -384,11 +439,33 @@ if __name__ == "__main__":
             other_seeds = set(all_group_results[other_group].keys())
             shared_seeds = sorted(base_seeds & other_seeds)
 
+            # prepare pairing ONCE per comparison
+            base_seeds_sorted = sorted(all_group_results["baseline"].keys())
+            other_seeds_sorted = sorted(all_group_results[other_group].keys())
+
+            n = min(len(base_seeds_sorted), len(other_seeds_sorted))
+
             for pretty_name, key in metrics_to_test:
-                base_vals = [all_group_results["baseline"][s][split_name][key] for s in shared_seeds if split_name in all_group_results["baseline"][s]]
-                other_vals = [all_group_results[other_group][s][split_name][key] for s in shared_seeds if split_name in all_group_results[other_group][s]]
+                base_vals = []
+                other_vals = []
+
+                for i in range(n):
+                    s_base = base_seeds_sorted[i]
+                    s_other = other_seeds_sorted[i]
+
+                    if split_name in all_group_results["baseline"][s_base] and split_name in all_group_results[other_group][s_other]:
+                        base_vals.append(all_group_results["baseline"][s_base][split_name][key])
+                        other_vals.append(all_group_results[other_group][s_other][split_name][key])
+
+                # sanity checks
+                if len(base_vals) != len(other_vals):
+                    print("[WARN] Length mismatch in pairing")
+
+                if len(base_vals) < 5:
+                    print(f"[WARN] Low sample size (n={len(base_vals)}) for stats")
 
                 test = paired_tests(base_vals, other_vals)
+
                 print(
                     f"  baseline vs {other_group} | {pretty_name}: "
                     f"n={test['n_pairs']}, p={test['p_value']:.4g}"
